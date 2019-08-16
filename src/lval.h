@@ -22,6 +22,8 @@ enum lval_types
     LVAL_SEXPR
 };
 
+// Constructors
+
 lval *lval_num(long x);
 
 lval *lval_err(char *m);
@@ -37,6 +39,22 @@ lval *lval_read(mpc_ast_t *t);
 lval *lval_add(lval *v, lval *x);
 
 void lval_del(lval *v);
+
+// Evaluation
+
+lval *lval_eval_sexpr(lval *v);
+
+lval *lval_eval(lval *v);
+
+lval *builtin_op(lval *a, char *op);
+
+// Utilities
+
+lval *lval_pop(lval *v, int i);
+
+lval *lval_take(lval *v, int i);
+
+// Print
 
 void lval_expr_print(lval *v, char open, char close);
 
