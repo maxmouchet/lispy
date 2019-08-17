@@ -17,6 +17,9 @@ int main(int argc, char **argv)
 {
     parser_init();
 
+    lenv* e = lenv_new();
+    lenv_add_builtins(e);
+
     puts("Lispy Version 0.0.0.1");
     puts("Press Ctrl+C to Exit\n");
 
@@ -29,7 +32,7 @@ int main(int argc, char **argv)
         mpc_result_t r;
         if (parser_parse(input, &r))
         {
-            lval *x = lval_eval(lval_read(r.output));
+            lval *x = lval_eval(e, lval_read(r.output));
             lval_println(x);
             lval_del(x);
             mpc_ast_delete(r.output);

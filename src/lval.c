@@ -152,12 +152,12 @@ lval *lval_add(lval *v, lval *x)
     return v;
 }
 
-lval *lval_eval_sexpr(lval *v)
+lval *lval_eval_sexpr(lenv *e, lval *v)
 {
     // Evaluate Children
     for (int i = 0; i < v->count; i++)
     {
-        v->cell[i] = lval_eval(v->cell[i]);
+        v->cell[i] = lval_eval(e, v->cell[i]);
     }
 
     // Error Checking
@@ -181,27 +181,34 @@ lval *lval_eval_sexpr(lval *v)
         return lval_take(v, 0);
     }
 
-    // Ensure First Element is Symbol
+    // Ensure first element is a function after evaluation
     lval *f = lval_pop(v, 0);
-    if (f->type != LVAL_SYM)
+    if (f->type != LVAL_FUN)
     {
         lval_del(f);
         lval_del(v);
-        return lval_err("S-expression does not start with a symbol!");
+        return lval_err("first element is not a function.");
     }
 
-    // Call built-in with operator
-    lval *result = builtin(v, f->sym);
+    // Call function to get result
+    lval *result = f->fun(e, v);
     lval_del(f);
     return result;
 }
 
-lval *lval_eval(lval *v)
+lval *lval_eval(lenv *e, lval *v)
 {
+    if (v->type == LVAL_SYM)
+    {
+        lval *x = lenv_get(e, v);
+        lval_del(v);
+        return x;
+    }
+
     // Evaluate S-expression
     if (v->type == LVAL_SEXPR)
     {
-        return lval_eval_sexpr(v);
+        return lval_eval_sexpr(e, v);
     }
 
     // All other lval types remain the same
@@ -231,41 +238,44 @@ lval *lval_take(lval *v, int i)
     return x;
 }
 
-lval *lval_copy(lval *v) {
+lval *lval_copy(lval *v)
+{
     lval *x = malloc(sizeof(lval));
     x->type = v->type;
 
-    switch (v->type) {
-        
-        // Copy functions and numbers directly
-        case LVAL_NUM:
-            x->num = v->num;
-            break;
+    switch (v->type)
+    {
 
-        case LVAL_FUN:
-            x->fun = v->fun;
-            break;
-        
-        // Copy strings using malloc and strcpy
-        case LVAL_ERR:
-            x->err = malloc(strlen(v->err) + 1);
-            strcpy(x->err, v->err);
-            break;
+    // Copy functions and numbers directly
+    case LVAL_NUM:
+        x->num = v->num;
+        break;
 
-        case LVAL_SYM:
-            x->sym = malloc(strlen(v->sym) + 1);
-            strcpy(x->sym, v->sym);
-            break;
+    case LVAL_FUN:
+        x->fun = v->fun;
+        break;
 
-        // Copy lists by copying each sub-expressions
-        case LVAL_SEXPR:
-        case LVAL_QEXPR:
-            x->count = v->count;
-            x->cell = malloc(sizeof(lval*) * x->count);
-            for (int i = 0; i < x->count; i++) {
-                x->cell[i] = lval_copy(v->cell[i]);
-            }
-            break;
+    // Copy strings using malloc and strcpy
+    case LVAL_ERR:
+        x->err = malloc(strlen(v->err) + 1);
+        strcpy(x->err, v->err);
+        break;
+
+    case LVAL_SYM:
+        x->sym = malloc(strlen(v->sym) + 1);
+        strcpy(x->sym, v->sym);
+        break;
+
+    // Copy lists by copying each sub-expressions
+    case LVAL_SEXPR:
+    case LVAL_QEXPR:
+        x->count = v->count;
+        x->cell = malloc(sizeof(lval *) * x->count);
+        for (int i = 0; i < x->count; i++)
+        {
+            x->cell[i] = lval_copy(v->cell[i]);
+        }
+        break;
     }
 
     return x;
