@@ -212,3 +212,6 @@ lval *builtin_def(lenv *e, lval *a)
     lval_del(a);
     return lval_sexpr();
 }
+
+// TODO
+// lval *builtin_exit(lenv *e, lval *a) {};
