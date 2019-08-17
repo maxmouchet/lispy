@@ -1,4 +1,7 @@
-project('lispy', 'c', default_options: ['werror=true'])
+project('lispy', 'c', default_options: ['c_std=c99', 'werror=true'])
+
+# Don't warn on #pragma region ...
+add_project_arguments('-Wno-unknown-pragmas', language : 'c')
 
 inc_dir = include_directories(['include/'])
 mpc_dep = declare_dependency(include_directories: inc_dir, sources: ['include/mpc.c'])
