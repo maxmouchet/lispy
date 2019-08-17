@@ -1,2 +1,0 @@
-repl: src/repl.c src/parser.c src/parser.h src/lval.h src/lval.c src/builtins.h src/builtins.c
-	$(CC) -g -std=c99 -Wall -Iinclude/ src/repl.c src/parser.c src/lval.c src/builtins.c include/mpc.c -ledit -lm -o $@
