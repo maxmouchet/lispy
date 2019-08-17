@@ -55,7 +55,7 @@ struct lenv
 
 lval *lval_num(long x);
 
-lval *lval_err(char *m);
+lval *lval_err(char *fmt, ...);
 
 lval *lval_sym(char *s);
 
@@ -86,6 +86,8 @@ lval *lval_pop(lval *v, int i);
 lval *lval_take(lval *v, int i);
 
 lval *lval_copy(lval *v);
+
+char* ltype_name(int t);
 
 // Print
 
