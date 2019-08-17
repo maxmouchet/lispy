@@ -1,7 +1,7 @@
 #ifndef LISPY_BUILTINS
 #define LISPY_BUILTINS
 
-#include "lval.h"
+#include "lispy.h"
 
 lval *builtin(lval *a, char *func);
 

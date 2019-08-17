@@ -10,6 +10,8 @@ CC=clang meson build -Db_sanitize=address
 # build/
 ninja
 ninja scan-build # requires clang-analyser
+
+valgrind --leak-check=yes ./repl
 ```
 
 ## Other resources
