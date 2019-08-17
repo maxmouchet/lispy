@@ -319,7 +319,7 @@ void lval_print(lval *v)
         break;
 
     case LVAL_ERR:
-        printf(BOLDRED "Error: %s" RESET, v->err);
+        printf(BOLDRED "Error:" RESET RED " %s" RESET, v->err);
         break;
 
     case LVAL_SYM:
@@ -339,7 +339,7 @@ void lval_print(lval *v)
 void lval_println(lval *v)
 {
     lval_print(v);
-    putchar('\n');
+    printf("\n\n");
 }
 
 char *ltype_name(int t)

@@ -5,6 +5,7 @@
 
 #include "lispy.h"
 #include "parser.h"
+#include "colors.h"
 
 // TODO: JIT ?
 // TODO: Compiler
@@ -25,7 +26,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        char *input = readline("lispy> ");
+        char *input = readline("\001\033" BOLDGREEN "\002" "lispy>" "\001\033" RESET "\002" " ");
 
         add_history(input);
 
