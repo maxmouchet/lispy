@@ -143,7 +143,7 @@ lval *builtin_join(lenv *e, lval *a)
 {
     for (int i = 0; i < a->count; i++)
     {
-        LASSERT(a, a->cell[i]->type == LVAL_QEXPR, "Function 'join' passed incorrect type for argument 0. Got %s, Expected %s.", ltype_name(a->cell[i]->type), ltype_name(LVAL_QEXPR));
+        LASSERT(a, a->cell[i]->type == LVAL_QEXPR, "Function 'join' passed incorrect type for argument %d. Got %s, Expected %s.", i, ltype_name(a->cell[i]->type), ltype_name(LVAL_QEXPR));
     }
 
     lval *x = lval_pop(a, 0);
