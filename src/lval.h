@@ -19,7 +19,8 @@ enum lval_types
     LVAL_ERR,
     LVAL_NUM,
     LVAL_SYM,
-    LVAL_SEXPR
+    LVAL_SEXPR,
+    LVAL_QEXPR
 };
 
 // Constructors
@@ -31,6 +32,8 @@ lval *lval_err(char *m);
 lval *lval_sym(char *s);
 
 lval *lval_sexpr(void);
+
+lval *lval_qexpr(void);
 
 lval *lval_read_num(mpc_ast_t *t);
 
@@ -45,8 +48,6 @@ void lval_del(lval *v);
 lval *lval_eval_sexpr(lval *v);
 
 lval *lval_eval(lval *v);
-
-lval *builtin_op(lval *a, char *op);
 
 // Utilities
 

@@ -1,4 +1,5 @@
 #include "lval.h"
+#include "builtins.h"
 
 lval *lval_num(long x)
 {
@@ -35,6 +36,15 @@ lval *lval_sexpr(void)
     return v;
 }
 
+lval *lval_qexpr(void)
+{
+    lval *v = malloc(sizeof(lval));
+    v->type = LVAL_QEXPR;
+    v->count = 0;
+    v->cell = NULL;
+    return v;
+}
+
 void lval_del(lval *v)
 {
     switch (v->type)
@@ -45,11 +55,13 @@ void lval_del(lval *v)
     case LVAL_ERR:
         free(v->err);
         break;
+
     case LVAL_SYM:
         free(v->sym);
         break;
 
     case LVAL_SEXPR:
+    case LVAL_QEXPR:
         for (int i = 0; i < v->count; i++)
         {
             lval_del(v->cell[i]);
@@ -89,6 +101,11 @@ lval *lval_read(mpc_ast_t *t)
         x = lval_sexpr();
     }
 
+    if (strstr(t->tag, "qexpr"))
+    {
+        x = lval_qexpr();
+    }
+
     for (int i = 0; i < t->children_num; i++)
     {
         if (strcmp(t->children[i]->contents, "(") == 0)
@@ -96,6 +113,14 @@ lval *lval_read(mpc_ast_t *t)
             continue;
         }
         if (strcmp(t->children[i]->contents, ")") == 0)
+        {
+            continue;
+        }
+        if (strcmp(t->children[i]->contents, "{") == 0)
+        {
+            continue;
+        }
+        if (strcmp(t->children[i]->contents, "}") == 0)
         {
             continue;
         }
@@ -156,7 +181,7 @@ lval *lval_eval_sexpr(lval *v)
     }
 
     // Call built-in with operator
-    lval *result = builtin_op(v, f->sym);
+    lval *result = builtin(v, f->sym);
     lval_del(f);
     return result;
 }
@@ -171,63 +196,6 @@ lval *lval_eval(lval *v)
 
     // All other lval types remain the same
     return v;
-}
-
-lval *builtin_op(lval *a, char *op)
-{
-    // Ensure all arguments are numbers
-    for (int i = 0; i < a->count; i++)
-    {
-        if (a->cell[i]->type != LVAL_NUM)
-        {
-            lval_del(a);
-            return lval_err("Cannot operate on non-number!");
-        }
-    }
-
-    // Pop the first element
-    lval *x = lval_pop(a, 0);
-
-    // If no arguments and sub then perform unary negation
-    if ((strcmp(op, "-") == 0) && (a->count == 0))
-    {
-        x->num = -(x->num);
-    }
-
-    // While there are still elements remaining
-    while (a->count > 0)
-    {
-        lval *y = lval_pop(a, 0);
-
-        if (strcmp(op, "+") == 0)
-        {
-            x->num += y->num;
-        }
-        if (strcmp(op, "-") == 0)
-        {
-            x->num -= y->num;
-        }
-        if (strcmp(op, "*") == 0)
-        {
-            x->num *= y->num;
-        }
-        if (strcmp(op, "/") == 0)
-        {
-            if (y->num == 0)
-            {
-                lval_del(x);
-                lval_del(y);
-                x = lval_err("Division By Zero!");
-                break;
-            }
-            x->num /= y->num;
-        }
-
-        lval_del(y);
-    }
-
-    lval_del(a);
-    return x;
 }
 
 lval *lval_pop(lval *v, int i)
@@ -287,6 +255,10 @@ void lval_print(lval *v)
 
     case LVAL_SEXPR:
         lval_expr_print(v, '(', ')');
+        break;
+
+    case LVAL_QEXPR:
+        lval_expr_print(v, '{', '}');
         break;
     }
 }
