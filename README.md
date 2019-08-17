@@ -4,15 +4,24 @@ http://www.buildyourownlisp.com/contents
 
 
 ```bash
-meson build
-CC=clang meson build -Db_sanitize=address
+# Debug configuration
+export CC=clang
+meson -Db_sanitize=address debug
 
-# build/
+# Release configuration
+meson -Dbuildtype=release release
+```
+
+```bash
+# In debug/, release/, ...
 ninja
-ninja scan-build # requires clang-analyser
+```
 
+```bash
+ninja scan-build # requires clang-analyser
 valgrind --leak-check=yes ./repl
 ```
+
 
 ## Other resources
 
