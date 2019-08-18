@@ -1,5 +1,7 @@
 # Lispy
 
+[![Build Status](https://travis-ci.com/maxmouchet/lispy.svg?token=4sJeU7PhwNeabe27p5Qz&branch=master)](https://travis-ci.com/maxmouchet/lispy)
+
 http://www.buildyourownlisp.com/contents
 
 
