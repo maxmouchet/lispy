@@ -49,31 +49,61 @@ struct lenv {
 
 // Constructors
 
+/**
+ * @brief Constructs an `lval` holding an integer.
+ **/
 lval *lval_num(long x);
 
+/**
+ * @brief Constructs an `lval` holding an error.
+ **/
 lval *lval_err(char *fmt, ...);
 
+/**
+ * @brief Constructs an `lval` holding a symbol.
+ **/
 lval *lval_sym(char *s);
 
+/**
+ * @brief Constructs an `lval` holding an S-expression.
+ **/
 lval *lval_sexpr(void);
 
+/**
+ * @brief Constructs an `lval` holding a Q-expression.
+ **/
 lval *lval_qexpr(void);
 
+/**
+ * @brief Constructs an `lval` holding a function.
+ **/
 lval *lval_fun(lbuiltin func);
 
-lval *lval_read_num(mpc_ast_t *t);
-
+/**
+ * @brief Transform an AST to an `lval`.
+ **/
 lval *lval_read(mpc_ast_t *t);
 
+/**
+ * @brief Transform an AST to an `lval` holding an integer.
+ **/
+lval *lval_read_num(mpc_ast_t *t);
+
+/**
+ * @brief Add two expressions together.
+ **/
 lval *lval_add(lval *v, lval *x);
 
+/**
+ * @brief `lval` destructor.
+ **/
 void lval_del(lval *v);
 
 // Evaluation
 
-lval *lval_eval_sexpr(lenv *e, lval *v);
-
 lval *lval_eval(lenv *e, lval *v);
+
+lval *lval_eval_sexpr(lenv *e, lval *v);
 
 // Utilities
 
@@ -87,11 +117,11 @@ char *ltype_name(int t);
 
 // Print
 
-void lval_expr_print(lval *v, char open, char close);
-
 void lval_print(lval *v);
 
 void lval_println(lval *v);
+
+void lval_expr_print(lval *v, char open, char close);
 
 #pragma endregion
 
