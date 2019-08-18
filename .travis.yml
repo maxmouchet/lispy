@@ -15,7 +15,7 @@ install:
   - unzip -q ninja-linux.zip -d build
   - export PATH="$PWD/build:$PATH"
   - pip install meson
-  - apt install libedit-dev
+  - sudo apt-get install libedit-dev
 
 script:
   - meson builddir
