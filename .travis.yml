@@ -1,0 +1,22 @@
+language: python
+python: 3.6
+
+os: linux
+dist: xenial
+
+matrix:
+  include:
+    - env: CC=gcc
+    - env: CC=clang
+
+install:
+  - export NINJA_LATEST=$(curl -s https://api.github.com/repos/ninja-build/ninja/releases/latest | grep browser_download_url | cut -d '"' -f 4 | grep ninja-linux.zip)
+  - wget "$NINJA_LATEST"
+  - unzip -q ninja-linux.zip -d build
+  - export PATH="$PWD/build:$PATH"
+  - pip install meson
+
+script:
+  - meson builddir
+  - ninja -C builddir
+  # - ninja -C builddir test
