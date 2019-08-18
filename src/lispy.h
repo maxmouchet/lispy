@@ -13,38 +13,35 @@ typedef lval *(*lbuiltin)(lenv *, lval *);
 
 #pragma region lval struct
 
-enum lval_types
-{
-    LVAL_ERR,
-    LVAL_NUM,
-    LVAL_SYM,
-    LVAL_FUN,
-    LVAL_SEXPR,
-    LVAL_QEXPR
+enum lval_types {
+  LVAL_ERR,
+  LVAL_NUM,
+  LVAL_SYM,
+  LVAL_FUN,
+  LVAL_SEXPR,
+  LVAL_QEXPR
 };
 
-struct lval
-{
-    int type;
+struct lval {
+  int type;
 
-    long num;
-    char *err;
-    char *sym;
-    lbuiltin fun;
+  long num;
+  char *err;
+  char *sym;
+  lbuiltin fun;
 
-    int count;
-    struct lval **cell;
+  int count;
+  struct lval **cell;
 };
 
 #pragma endregion
 
 #pragma region lenv struct
 
-struct lenv
-{
-    int count;
-    char **syms;
-    lval **vals;
+struct lenv {
+  int count;
+  char **syms;
+  lval **vals;
 };
 
 #pragma endregion
@@ -87,7 +84,7 @@ lval *lval_take(lval *v, int i);
 
 lval *lval_copy(lval *v);
 
-char* ltype_name(int t);
+char *ltype_name(int t);
 
 // Print
 

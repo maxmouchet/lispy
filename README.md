@@ -19,6 +19,7 @@ ninja -C release
 ```bash
 ninja scan-build # requires clang-analyser
 valgrind --leak-check=yes ./repl
+clang-format -style=Google -i src/*
 ```
 
 
