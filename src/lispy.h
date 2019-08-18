@@ -1,5 +1,4 @@
-#ifndef LISPY_LISPY
-#define LISPY_LISPY
+#pragma once
 
 #include "mpc.h"
 
@@ -115,5 +114,3 @@ void lenv_add_builtin(lenv *e, char *name, lbuiltin func);
 void lenv_add_builtins(lenv *e);
 
 #pragma endregion
-
-#endif

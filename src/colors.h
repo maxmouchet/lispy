@@ -1,3 +1,5 @@
+#pragma once
+
 // https://stackoverflow.com/a/1961222
 #define RESET "\033[0m"
 #define BLACK "\033[30m"              /* Black */
