@@ -21,3 +21,6 @@ script:
   - meson builddir
   - ninja -C builddir
   # - ninja -C builddir test
+
+notifications:
+  email: false
