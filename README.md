@@ -9,14 +9,11 @@ http://www.buildyourownlisp.com/contents
 # Debug configuration
 export CC=clang
 meson -Db_sanitize=address debug
+ninja -C debug
 
 # Release configuration
 meson -Dbuildtype=release release
-```
-
-```bash
-# In debug/, release/, ...
-ninja
+ninja -C release
 ```
 
 ```bash
