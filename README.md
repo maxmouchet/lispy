@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.com/maxmouchet/lispy.svg?token=4sJeU7PhwNeabe27p5Qz&branch=master)](https://travis-ci.com/maxmouchet/lispy)
 
-My own attempt at [_Build Your Own Lisp_](http://www.buildyourownlisp.com).
+My own attempt at [_Build Your Own Lisp_](http://www.buildyourownlisp.com).  
+_WIP._
 
 ```bash
 # Debug configuration
